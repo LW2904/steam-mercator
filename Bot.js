@@ -15,7 +15,7 @@ function Bot (account) {
   EventEmitter.call(this)
 
   this.client = new User()
-  this.web = new Community()
+  this.community = new Community()
   this.trader = new Manager({
     steam: this.client,
     domain: 'fsoc.space',
@@ -25,7 +25,10 @@ function Bot (account) {
   this.cards = {}
   this.inventory = {}
   this.options = {
-    spamProtection: false
+    spamProtection: false,
+    rate: 20,
+    keyPrice: 2.3,
+    unknown: [ `¯\\_(ツ)_/¯`, 'ಠ_ಠ', '⚆ _ ⚆', 'ಠ~ಠ',  ]
   }
 
   // These are fatal, allow the app to gracefully shit its pants.
@@ -36,7 +39,7 @@ function Bot (account) {
 
   // Forward all steam interface events to our emitter.
   fwd(this.client, this)
-  fwd(this.web, this)
+  fwd(this.community, this)
   fwd(this.trader, this)
 
   // We'll do that ourselves.
@@ -50,11 +53,13 @@ function Bot (account) {
 
   // Unlike loggedOn, this only gets emitted when logOn really was successful.
   this.client.on('webSession', (sessionID, cookies) => {
-    this.web.setCookies(cookies)
+    this.community.setCookies(cookies)
     this.trader.setCookies(cookies)
 
     // Set state to online.
     this.client.setPersona(1)
+
+    this.steamID = this.client.steamID || this.community.steamID
 
     this.emit('initialized')
   })
@@ -66,6 +71,8 @@ Bot.prototype.setOption = function (option, value) {
   this.options[option] = value
 }
 
+require('./components/inventory')
+require('./components/commands')
 require('./components/handlers')
 require('./components/helpers')
 require('./components/spam')

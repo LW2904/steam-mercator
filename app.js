@@ -13,11 +13,13 @@ bot.on('initialized', () => {
   bot.initInventory()
 })
 
-bot.on('inventoryReady' () => {
+bot.on('inventoryReady', () => {
   log.info('fetched and parsed inventory.')
+
+  bot.on('cmd', bot.handle)
 })
 
-// TODO: Listen to all events.
+// TODO: Log all events.
 if (process.env.NODE_ENV === 'dev') {
   // Notable node-steam-user events
   bot.on('loggedOn', () => log.debug(`loggedOn event by steam-user`))
@@ -34,8 +36,8 @@ if (process.env.NODE_ENV === 'dev') {
   bot.on('relChange', (sid, rel) =>
     log.debug(`relationship with ${sid} is now ${rel}`))
 
-  bot.on('cmd', (cmd, arg) =>
-    log.debug(`command ${cmd} ${arg ? `with arguments ${arg} ` : ``}received.`))
+  bot.on('cmd', (id, cmd, arg) =>
+    log.debug(`command ${cmd} ${arg ? `with arguments ${arg} ` : ``}received by ${id.toString()}.`))
 
   bot.on('spamMessage', sid => log.debug(`spam by ${sid.toString()} ignored.`))
 
@@ -45,5 +47,8 @@ if (process.env.NODE_ENV === 'dev') {
     log.error(`something went wrong with the bot, retrying in 10 minutes. (${err.msg || err.message || err})`))
 
   bot.on('communityError', err =>
-    log.error(`something went wrong while communicating with steam, retrying in 10 minutes. (${err.msg || err.message || err})`))
+    log.error(`something went wrong while communicating with steam. (${err.msg || err.message || err})`))
+
+  bot.on('levelError', err =>
+    log.error(`something went wrong while getting level. (${err.msg || err.message || err})`))
 }
