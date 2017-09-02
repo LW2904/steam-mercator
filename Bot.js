@@ -71,8 +71,8 @@ Bot.prototype.setOption = function (option, value) {
   this.options[option] = value
 }
 
+require('./components/commands/')
 require('./components/inventory')
-require('./components/commands')
 require('./components/handlers')
 require('./components/helpers')
 require('./components/spam')

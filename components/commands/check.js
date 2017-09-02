@@ -1,8 +1,8 @@
-let Bot = require('../Bot')
+const level = require('../../scripts/level')
 
-const level = require('../scripts/level')
+module.exports = check
 
-Bot.prototype._cmdCheck = function (id, args) {
+function check (id, args) {
   if (!this.LevelParser)
     this.LevelParser = new (require('steam-level-parser'))(this.rate, this.keyPrice)
 

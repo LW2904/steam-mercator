@@ -1,6 +1,6 @@
 {
   "name": "steam-mercator",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "",
   "main": "app.js",
   "scripts": {
@@ -12,6 +12,7 @@
     "cheerio": "^1.0.0-rc.2",
     "fwd": "^0.2.2",
     "moment": "^2.18.1",
+    "readline-sync": "^1.4.7",
     "request": "^2.81.0",
     "steam-level-parser": "^1.0.0",
     "steam-tradeoffer-manager": "^2.9.0",
