@@ -11,6 +11,9 @@ function check (id, args) {
   if (args.length > 2)
     return this.client.chatMessage(id, `Invalid number of arguments.`)
 
+  this.LevelParser.UpdateRate(this.options.rate)
+  this.LevelParser.UpdateKeyPrice(this.options.keyPrice)
+
   if (args[1]) {
     let data = this.LevelParser.Calculate(parseInt(args[0]), parseInt(args[1]))
     this.client.chatMessage(id, `Level ${args[0]} -> ${args[1]} would require ${data.Intermediate.Exp} EXP (${data.Intermediate.Sets} Sets) and therefore about ${data.Intermediate.Keys} Key${data.Intermediate.Keys > 1 ? 's' : ''}.`)
